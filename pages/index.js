@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
-  const [result, setResult] = useState();
+  const [result, setResult] = useState([]);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -21,8 +21,7 @@ export default function Home() {
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
-
-      setResult(data.result);
+      setResult(data.result ? data.result.split('\n') : []);
       setAnimalInput("");
     } catch (error) {
       // Consider implementing your own error handling logic here
@@ -34,24 +33,30 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>OpenAI Quickstart</title>
+        <title>OpenAI</title>
         <link rel="icon" href="/dog.png" />
       </Head>
 
       <main className={styles.main}>
         <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <h3>Gernerate a list of interview questiosn for: </h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            name="animal"
-            placeholder="Enter an animal"
+            name="type"
+            placeholder="Enter an category"
             value={animalInput}
             onChange={(e) => setAnimalInput(e.target.value)}
           />
-          <input type="submit" value="Generate names" />
+          <input type="submit" value="Generate questions" />
         </form>
-        <div className={styles.result}>{result}</div>
+        <div className={styles.result} style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+          {result.map(ele => {
+            return (
+              <div>{ele}</div>
+            )
+          })}
+        </div>
       </main>
     </div>
   );

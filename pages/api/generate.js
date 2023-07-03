@@ -26,10 +26,27 @@ export default async function (req, res) {
 	}
 
 	try {
+		// response = openai.Completion.create(
+		// 	model="text-davinci-003",
+		// 	prompt="Create a list of 8 questions for my interview with a front end web developer:",
+		// 	temperature=0.5,
+		// 	max_tokens=150,
+		// 	top_p=1.0,
+		// 	frequency_penalty=0.0,
+		// 	presence_penalty=0.0
+		// )
+
 		const completion = await openai.createCompletion({
+			// model: "text-davinci-003",
+			// prompt: generatePrompt(animal),
+			// temperature: 0.6,
 			model: "text-davinci-003",
-			prompt: generatePrompt(animal),
-			temperature: 0.6,
+			prompt: "Create a list of 20 questions for my interview with " + `${animal} and answers respectively`,
+			temperature: 0.5,
+			max_tokens: 150,
+			top_p: 1.0,
+			frequency_penalty: 0.0,
+			presence_penalty: 0.0
 		});
 		res.status(200).json({ result: completion.data.choices[0].text });
 	} catch (error) {
